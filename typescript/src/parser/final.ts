@@ -26,6 +26,8 @@ export function extractFinal(response: string): string | null {
     /FINAL\s*\(\s*"([^"\\]*(?:\\.[^"\\]*)*)"\s*\)/,
     // Single quotes (single line)
     /FINAL\s*\(\s*'([^'\\]*(?:\\.[^'\\]*)*)'\s*\)/,
+    // Unquoted value (numbers only - for safety, require digits or decimal)
+    /FINAL\s*\(\s*(-?[\d.]+)\s*\)/,
   ];
 
   for (const pattern of patterns) {

@@ -144,10 +144,9 @@ export class ClaudeCodeProvider implements LLMProvider {
       console.log("[ClaudeCodeProvider] Prompt length:", prompt.length);
     }
 
-    // Build CLI arguments
+    // Build CLI arguments (prompt via stdin to avoid arg length limits)
     const args = [
       "-p", // Print mode (non-interactive)
-      prompt,
       "--model",
       model,
       "--output-format",
@@ -158,8 +157,8 @@ export class ClaudeCodeProvider implements LLMProvider {
       args.push("--max-budget-usd", this.config.maxBudgetUsd.toString());
     }
 
-    // Execute Claude Code CLI
-    const result = await this.executeClaudeCLI(args, timeout);
+    // Execute Claude Code CLI with prompt via stdin
+    const result = await this.executeClaudeCLI(args, prompt, timeout);
 
     if (this.config.debug) {
       console.log("[ClaudeCodeProvider] Response received");
@@ -172,7 +171,7 @@ export class ClaudeCodeProvider implements LLMProvider {
   /**
    * Execute Claude Code CLI and parse the response.
    */
-  private executeClaudeCLI(args: string[], timeout: number): Promise<LLMResponse> {
+  private executeClaudeCLI(args: string[], prompt: string, timeout: number): Promise<LLMResponse> {
     return new Promise((resolve, reject) => {
       const proc = spawn(this.config.claudePath, args, {
         cwd: this.config.cwd,
@@ -192,6 +191,10 @@ export class ClaudeCodeProvider implements LLMProvider {
         proc.kill("SIGTERM");
         reject(new Error(`Claude Code timed out after ${timeout}ms`));
       }, timeout);
+
+      // Write prompt to stdin and close
+      proc.stdin.write(prompt);
+      proc.stdin.end();
 
       proc.stdout.on("data", (data) => {
         stdout += data.toString();

@@ -16,7 +16,10 @@
  * Note: These tests make real API calls and will consume subscription usage.
  */
 
-import { describe, expect, it, beforeAll } from "bun:test";
+import { describe, expect, it, beforeAll, setDefaultTimeout } from "bun:test";
+
+// E2E tests need longer timeout for real API calls (2 minutes)
+setDefaultTimeout(120_000);
 import { RLM } from "../../src/rlm";
 import { ClaudeCodeProvider } from "../../src/providers/claude-code";
 import { loadFinancialReport } from "../utils/fixtures";
