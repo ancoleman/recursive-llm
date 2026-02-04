@@ -49,7 +49,7 @@ def main():
     rlm = RLM(
         model="gpt-5-mini",  # Use mini for cheaper testing
         max_iterations=15,
-        temperature=0.7
+        # temperature=0.7  # GPT-5 models only support temperature=1
     )
 
     # Ask a question about the document
@@ -61,7 +61,7 @@ def main():
 
     try:
         # Process with RLM
-        result = rlm.completion(query, long_document)
+        result = rlm.complete(query, long_document)
 
         print("Result:")
         print(result)

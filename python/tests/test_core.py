@@ -24,7 +24,7 @@ async def test_simple_completion(mock_litellm):
     mock_litellm.return_value = MockResponse('FINAL("The answer")')
 
     rlm = RLM(model="test-model")
-    result = await rlm.acompletion("What is the answer?", "Some context")
+    result = await rlm.acomplete("What is the answer?", "Some context")
 
     assert result == "The answer"
     assert mock_litellm.called
@@ -40,7 +40,7 @@ async def test_multi_step_completion(mock_litellm):
     mock_litellm.side_effect = responses
 
     rlm = RLM(model="test-model")
-    result = await rlm.acompletion("Test", "Hello World Test")
+    result = await rlm.acomplete("Test", "Hello World Test")
 
     assert result == "Done"
     assert mock_litellm.call_count == 2
@@ -54,7 +54,7 @@ async def test_max_iterations_error(mock_litellm):
     rlm = RLM(model="test-model", max_iterations=3)
 
     with pytest.raises(MaxIterationsError):
-        await rlm.acompletion("Test", "Context")
+        await rlm.acomplete("Test", "Context")
 
 
 @pytest.mark.asyncio
@@ -63,7 +63,7 @@ async def test_max_depth_error(mock_litellm):
     rlm = RLM(model="test-model", max_depth=2, _current_depth=2)
 
     with pytest.raises(MaxDepthError):
-        await rlm.acompletion("Test", "Context")
+        await rlm.acomplete("Test", "Context")
 
 
 @pytest.mark.asyncio
@@ -76,7 +76,7 @@ async def test_final_var(mock_litellm):
     mock_litellm.side_effect = responses
 
     rlm = RLM(model="test-model")
-    result = await rlm.acompletion("Test", "Context")
+    result = await rlm.acomplete("Test", "Context")
 
     assert result == "Test Answer"
 
@@ -91,7 +91,7 @@ async def test_repl_error_handling(mock_litellm):
     mock_litellm.side_effect = responses
 
     rlm = RLM(model="test-model")
-    result = await rlm.acompletion("Test", "Context")
+    result = await rlm.acomplete("Test", "Context")
 
     assert result == "Recovered"
 
@@ -106,7 +106,7 @@ async def test_context_operations(mock_litellm):
     mock_litellm.side_effect = responses
 
     rlm = RLM(model="test-model")
-    result = await rlm.acompletion("Get first 10 chars", "Hello World Example")
+    result = await rlm.acomplete("Get first 10 chars", "Hello World Example")
 
     assert result == "Hello Worl"
 
@@ -117,7 +117,7 @@ def test_sync_completion():
         mock.return_value = MockResponse('FINAL("Sync result")')
 
         rlm = RLM(model="test-model")
-        result = rlm.completion("Test", "Context")
+        result = rlm.complete("Test", "Context")
 
         assert result == "Sync result"
 
@@ -133,7 +133,7 @@ async def test_two_models(mock_litellm):
         _current_depth=0
     )
 
-    await rlm.acompletion("Test", "Context")
+    await rlm.acomplete("Test", "Context")
 
     # First call should use expensive model
     call_args = mock_litellm.call_args_list[0]
@@ -151,7 +151,7 @@ async def test_stats(mock_litellm):
     mock_litellm.side_effect = responses
 
     rlm = RLM(model="test-model")
-    await rlm.acompletion("Test", "Context")
+    await rlm.acomplete("Test", "Context")
 
     stats = rlm.stats
     assert stats['llm_calls'] == 3
@@ -170,7 +170,7 @@ async def test_api_base_and_key(mock_litellm):
         api_key="test-key"
     )
 
-    await rlm.acompletion("Test", "Context")
+    await rlm.acomplete("Test", "Context")
 
     call_kwargs = mock_litellm.call_args[1]
     assert call_kwargs['api_base'] == "http://localhost:8000"
