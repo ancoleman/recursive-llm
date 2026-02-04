@@ -40,7 +40,7 @@ const rlm = new RLM({
 });
 
 // Process a long document
-const result = await rlm.completion(
+const result = await rlm.complete(
   "What are the key findings?",
   veryLongDocument
 );
@@ -134,6 +134,23 @@ const provider = new VercelAIProvider(
 );
 ```
 
+### Claude Agent SDK (Subscription)
+
+Use your Claude Pro/Max subscription without API credits:
+
+```typescript
+import { ClaudeAgentProvider } from "@rlm/core";
+
+// Uses your Claude subscription via Claude Agent SDK
+const provider = new ClaudeAgentProvider({
+  defaultModel: "sonnet",  // or "opus", "haiku"
+});
+```
+
+**Prerequisites:**
+- Claude Code CLI installed: `npm install -g @anthropic-ai/claude-code`
+- Logged in: `claude login`
+
 ### Custom Fetch Provider
 
 ```typescript
@@ -193,9 +210,44 @@ The sandbox restricts:
 
 ## Testing
 
+### Prerequisites
+
+**For unit/integration tests (no API required):**
 ```bash
-bun test              # Run all tests
-bun run typecheck     # TypeScript type checking
+bun install
+```
+
+**For E2E tests with Anthropic API:**
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+**For E2E tests with Claude subscription:**
+```bash
+# Install Claude Code CLI
+npm install -g @anthropic-ai/claude-code
+
+# Login with your Pro/Max subscription
+claude login
+```
+
+### Running Tests
+
+```bash
+# Unit & integration tests (no API needed)
+bun test tests/unit tests/integration tests/parser.test.ts tests/sandbox.test.ts tests/rlm.test.ts
+
+# E2E tests with Claude subscription
+bun test tests/e2e/claude-agent.test.ts
+
+# E2E tests with Anthropic API key
+ANTHROPIC_API_KEY=sk-ant-... bun test tests/e2e/anthropic-api.test.ts
+
+# All tests
+bun test
+
+# TypeScript type checking
+bun run typecheck
 ```
 
 ## Architecture
