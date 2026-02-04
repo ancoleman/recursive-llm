@@ -1,0 +1,62 @@
+[
+  {
+    "id": "extract-1",
+    "query": "What was the Q3 revenue?",
+    "expectedAnswer": "$14.1 million",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-2",
+    "query": "What was the total annual revenue?",
+    "expectedAnswer": "$52.7 million",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-3",
+    "query": "How many employees were there at year end?",
+    "expectedAnswer": "450",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-4",
+    "query": "What was the acquisition cost of StartupX?",
+    "expectedAnswer": "$5 million",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-5",
+    "query": "What percentage of revenue came from international markets in Q3?",
+    "expectedAnswer": "40%",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-6",
+    "query": "What was the Q1 operating margin?",
+    "expectedAnswer": "20%",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-7",
+    "query": "How much cash did the company have?",
+    "expectedAnswer": "$45.2 million",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-8",
+    "query": "What was the customer satisfaction score in Q3?",
+    "expectedAnswer": "4.8/5",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-9",
+    "query": "What was the Series C funding amount?",
+    "expectedAnswer": "$30.0 million",
+    "category": "extraction"
+  },
+  {
+    "id": "extract-10",
+    "query": "What was the year-over-year growth rate?",
+    "expectedAnswer": "45%",
+    "category": "extraction"
+  }
+]
