@@ -74,10 +74,10 @@ export {
   AnthropicProvider,
   VercelAIProvider,
   FetchProvider,
-  ClaudeCodeProvider,
   ClaudeAgentProvider,
+  ClaudeCodeProvider, // Legacy alias for ClaudeAgentProvider
 } from "./providers";
-export type { ProviderConfig, LLMResponse, ClaudeCodeProviderConfig, ClaudeAgentProviderConfig } from "./providers";
+export type { ProviderConfig, LLMResponse, ClaudeAgentProviderConfig, ClaudeCodeProviderConfig } from "./providers";
 
 // Parser utilities (for advanced usage)
 export {

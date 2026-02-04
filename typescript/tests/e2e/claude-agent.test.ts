@@ -94,12 +94,8 @@ describeReal("E2E: Claude Agent Provider", () => {
   });
 
   describe("Direct Answers (no code execution)", () => {
-    it("should answer directly when question is simple", async () => {
-      // For Claude Agent Provider, the context is in the prompt
-      // (not accessible via sandbox code execution)
-      // So we test direct Q&A capability
-      const context = "The capital of France is Paris. The Eiffel Tower is located there.";
-
+    it("should answer math questions directly", async () => {
+      // Simple math doesn't need context exploration
       const rlm = new RLM({
         model: "haiku",
         provider,
@@ -107,12 +103,12 @@ describeReal("E2E: Claude Agent Provider", () => {
       });
 
       const result = await rlm.complete(
-        "What is the capital of France? Answer with just the city name.",
-        context
+        "What is 15 + 27? Reply with just the number.",
+        "Math calculation context"
       );
 
       const answer = result.answer.toLowerCase();
-      expect(answer).toMatch(/paris/i);
+      expect(answer).toMatch(/42/i);
     });
   });
 
