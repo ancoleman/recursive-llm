@@ -50,7 +50,7 @@ FINAL("Root got: " + result)
       recursionEvents.push({ depth: event.depth, subQuery: event.subQuery });
     });
 
-    const result = await rlm.completion("Main question", "Test context data");
+    const result = await rlm.complete("Main question", "Test context data");
 
     // Should have made a recursive call
     expect(recursionEvents.length).toBe(1);
@@ -77,7 +77,7 @@ FINAL("Root got: " + result)
       provider,
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     // Root should use expensive model (1 call)
     expect(provider.getModelCalls("expensive-model")).toBeGreaterThanOrEqual(1);
@@ -108,7 +108,7 @@ FINAL(result)
       provider,
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     // After first call, some budget should be consumed
     // Sub-RLM should receive (initialBudget - spent) as its budget
@@ -135,7 +135,7 @@ FINAL("root: " + result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context data here");
+    const result = await rlm.complete("Test", "Context data here");
 
     // Should accumulate: root + sub calls
     expect(result.stats.llmCalls).toBeGreaterThanOrEqual(2);
@@ -180,7 +180,7 @@ console.log("Got:", result);
       recursionAttempts.push(event.depth);
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should have attempted at least one recursion
     expect(recursionAttempts.length).toBeGreaterThanOrEqual(1);
@@ -208,7 +208,7 @@ console.log("Result:", result);
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should get graceful message about max depth
     expect(result.answer.toLowerCase()).toMatch(/max|depth|cannot/i);
@@ -233,7 +233,7 @@ FINAL("root: " + result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Root is at depth 0
     expect(result.stats.maxDepthReached).toBe(0);
@@ -254,7 +254,7 @@ FINAL("root: " + result)
       2 // Start at depth 2 (at limit)
     );
 
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       MaxDepthError
     );
   });
@@ -297,7 +297,7 @@ console.log("Results:", results);
       recursionCalls.push(event.subQuery);
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "Test",
       "Context data that is long enough to slice into multiple pieces for testing"
     );
@@ -329,7 +329,7 @@ FINAL(results.join(", "))
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should have accumulated calls from parallel sub-RLMs
     expect(result.stats.llmCalls).toBeGreaterThanOrEqual(2);
@@ -366,7 +366,7 @@ FINAL(results.join(", "))
     });
 
     // Should throw when budget exceeded
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       CostBudgetExceededError
     );
   });
@@ -391,7 +391,7 @@ FINAL("Got: " + result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should include the error message from sub-RLM
     expect(result.answer).toContain("Error");
@@ -420,7 +420,7 @@ console.log("Result:", result);
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete with some result
     expect(result.answer).toBeDefined();
@@ -446,7 +446,7 @@ FINAL(results.join(" | "))
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should have results from calls
     expect(result.answer).toContain("Success");
@@ -481,7 +481,7 @@ FINAL(result)
       events.push(event);
     });
 
-    await rlm.completion("Test", "A".repeat(1000));
+    await rlm.complete("Test", "A".repeat(1000));
 
     expect(events.length).toBe(1);
     expect(events[0].depth).toBe(1);

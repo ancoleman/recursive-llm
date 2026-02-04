@@ -20,7 +20,7 @@
  *   provider,
  * });
  *
- * const result = await rlm.completion(
+ * const result = await rlm.complete(
  *   "What are the key findings?",
  *   veryLongDocument
  * );

@@ -21,7 +21,7 @@
  *   provider,
  * });
  *
- * const result = await rlm.completion("What is the summary?", longDocument);
+ * const result = await rlm.complete("What is the summary?", longDocument);
  * ```
  */
 

@@ -28,6 +28,8 @@ export function buildSystemPrompt(
 - The context is stored in the variable \`context\` (NOT in this prompt)
 - Context size: ${contextInfo}${depthInfo}
 
+IMPORTANT: You cannot see the context directly. You MUST write JavaScript code to search and explore it.
+
 ## Available Tools
 You have access to the following in your execution environment:
 
@@ -81,9 +83,11 @@ FINAL("The answer based on my analysis")
 
 ## Important Notes
 - FINAL() is a marker, not a function - just write it as text
-- Always explore before concluding - don't guess
 - Use recursiveLlm() for sub-problems on context slices
-- Keep outputs concise to avoid truncation`;
+- Keep outputs concise to avoid truncation
+
+CRITICAL: Do NOT guess or make up answers. You MUST search the context first to find the actual information.
+Only use FINAL("answer") after you have found concrete evidence in the context.`;
 }
 
 /**

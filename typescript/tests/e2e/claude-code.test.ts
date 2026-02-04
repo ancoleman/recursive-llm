@@ -69,7 +69,7 @@ describeReal("E2E: Claude Code Provider", () => {
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is 2 + 2? Reply with just the number.",
         "Math context: basic arithmetic"
       );
@@ -89,7 +89,7 @@ describeReal("E2E: Claude Code Provider", () => {
         maxIterations: 3,
       });
 
-      const result = await rlm.completion("Say hello.", "Greeting context");
+      const result = await rlm.complete("Say hello.", "Greeting context");
 
       expect(result.stats.totalTokens).toBeGreaterThan(0);
       expect(result.stats.llmCalls).toBeGreaterThanOrEqual(1);
@@ -119,7 +119,7 @@ describeReal("E2E: Claude Code Provider", () => {
         maxIterations: 5,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the company's revenue?",
         context
       );
@@ -175,7 +175,7 @@ The system has been designed with scalability and reliability as core principles
         maxIterations: 5,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the system's p99 latency?",
         context
       );
@@ -195,7 +195,7 @@ The system has been designed with scalability and reliability as core principles
       });
 
       const start = Date.now();
-      const result = await rlm.completion("Say 'test'", "Test context");
+      const result = await rlm.complete("Say 'test'", "Test context");
       const duration = Date.now() - start;
 
       expect(result.answer).toBeDefined();
@@ -212,7 +212,7 @@ The system has been designed with scalability and reliability as core principles
         maxIterations: 5,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the time complexity of quicksort? Be brief.",
         "Algorithms context"
       );
@@ -235,7 +235,7 @@ The system has been designed with scalability and reliability as core principles
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is 1 + 1?",
         "" // Empty context
       );
@@ -255,7 +255,7 @@ The system has been designed with scalability and reliability as core principles
       });
 
       // This query might need exploration
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "Analyze this document",
         "Short document for testing."
       );
@@ -294,7 +294,7 @@ describeReal("E2E: Financial Report Analysis", () => {
       maxIterations: 5,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What was the Q3 revenue? Give me just the number.",
       financialReport
     );
@@ -313,7 +313,7 @@ describeReal("E2E: Financial Report Analysis", () => {
       maxIterations: 5,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What was the year-over-year growth rate?",
       financialReport
     );
@@ -332,7 +332,7 @@ describeReal("E2E: Financial Report Analysis", () => {
       maxIterations: 5,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "How many employees were there at year end?",
       financialReport
     );
@@ -390,7 +390,7 @@ describeReal("E2E: Recursive Processing", () => {
 - Premium support: 24/7 availability
     `;
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What is the enterprise price and what support options are available?",
       context
     );
@@ -422,7 +422,7 @@ describeReal("E2E: Cost Tracking", () => {
       maxIterations: 3,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What is the capital of France?",
       "Geography context: European countries"
     );
@@ -442,7 +442,7 @@ describeReal("E2E: Cost Tracking", () => {
       maxIterations: 10,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "Summarize this document.",
       "A short document to summarize."
     );

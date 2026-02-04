@@ -102,7 +102,7 @@ console.log("Recursive result:", result);
       recursionEvents.push({ depth: event.depth, subQuery: event.subQuery });
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What are all the revenue figures?",
       largeContext
     );
@@ -143,7 +143,7 @@ console.log("Total:", revenues.reduce((a, b) => a + b, 0));
       provider,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What is the sum of all quarterly revenues?",
       context
     );
@@ -189,7 +189,7 @@ FINAL(results.join(", "))
       provider,
     });
 
-    const result = await rlm.completion("Analyze this content", hugeContext);
+    const result = await rlm.complete("Analyze this content", hugeContext);
 
     // Should have used recursion
     expect(result.stats.llmCalls).toBeGreaterThan(1);
@@ -230,7 +230,7 @@ console.log("Recursion result:", result);
       depthsReached.push(event.depth);
     });
 
-    const result = await rlm.completion("Test deep recursion", "Context");
+    const result = await rlm.complete("Test deep recursion", "Context");
 
     // Should have made at least one recursive call
     expect(depthsReached.length).toBeGreaterThan(0);
@@ -262,7 +262,7 @@ console.log("Sub returned:", sub);
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete without throwing
     expect(result).toBeDefined();
@@ -296,7 +296,7 @@ FINAL(r1 + " | " + r2)
       provider,
     });
 
-    const result = await rlm.completion("Test", "A".repeat(300));
+    const result = await rlm.complete("Test", "A".repeat(300));
 
     // Stats should include all costs
     expect(result.stats.estimatedCost).toBeGreaterThan(0);
@@ -332,7 +332,7 @@ FINAL("root: " + result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete and track costs
     expect(result.stats.estimatedCost).toBeGreaterThan(0);
@@ -357,7 +357,7 @@ describe("Recursive Processing Flow: Real-World Scenarios", () => {
       provider,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What was the Q3 revenue?",
       context
     );
@@ -421,7 +421,7 @@ FINAL_WITH_CONFIDENCE({
       provider,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What were the quarterly growth rates?",
       context
     );
@@ -452,7 +452,7 @@ FINAL_WITH_CONFIDENCE({
       provider,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "Find the secret code in the document",
       haystack
     );
@@ -482,7 +482,7 @@ FINAL("Root got: " + result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete with the error message included
     expect(result.answer).toContain("Error");
@@ -507,7 +507,7 @@ FINAL("completed")
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete with some result
     expect(result).toBeDefined();

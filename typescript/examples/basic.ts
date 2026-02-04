@@ -91,7 +91,7 @@ async function main() {
   console.log("\n--- Starting RLM Completion ---\n");
 
   try {
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What was the total revenue for the year and what was the year-over-year growth?",
       context
     );

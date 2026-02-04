@@ -43,7 +43,7 @@ describeReal("E2E: Anthropic Direct API", () => {
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is 2 + 2? Reply with just the number.",
         "Math context"
       );
@@ -59,7 +59,7 @@ describeReal("E2E: Anthropic Direct API", () => {
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the capital of Japan? Answer briefly.",
         "Geography context"
       );
@@ -74,7 +74,7 @@ describeReal("E2E: Anthropic Direct API", () => {
         maxIterations: 3,
       });
 
-      const result = await rlm.completion("Say hello world.", "Test context");
+      const result = await rlm.complete("Say hello world.", "Test context");
 
       expect(result.stats.totalTokens).toBeGreaterThan(0);
       expect(result.stats.llmCalls).toBeGreaterThanOrEqual(1);
@@ -104,7 +104,7 @@ describeReal("E2E: Anthropic Direct API", () => {
         maxIterations: 5,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the price of the laptop?",
         context
       );
@@ -128,7 +128,7 @@ Q4: $180,000
         maxIterations: 5,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is the total annual sales?",
         context
       );
@@ -175,7 +175,7 @@ Encryption: AES-256
 Rate limiting: 100 requests/minute
       `;
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What database and authentication method does this system use?",
         largeContext
       );
@@ -193,7 +193,7 @@ Rate limiting: 100 requests/minute
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "What is 1 + 1?",
         "Simple math context"
       );
@@ -220,8 +220,8 @@ Rate limiting: 100 requests/minute
       const prompt = "What is 2 + 2?";
       const context = "Math context";
 
-      const haikuResult = await haikuRlm.completion(prompt, context);
-      const sonnetResult = await sonnetRlm.completion(prompt, context);
+      const haikuResult = await haikuRlm.complete(prompt, context);
+      const sonnetResult = await sonnetRlm.complete(prompt, context);
 
       // Sonnet should cost more than Haiku for same query
       // Haiku: $0.25/$1.25 per M tokens
@@ -245,7 +245,7 @@ Rate limiting: 100 requests/minute
         maxIterations: 3,
       });
 
-      const result = await rlm.completion(
+      const result = await rlm.complete(
         "Is there anything useful here?",
         "asdfghjkl random gibberish 12345 !!!@@@###"
       );
@@ -262,7 +262,7 @@ Rate limiting: 100 requests/minute
         maxIterations: 3,
       });
 
-      const result = await rlm.completion("What is this?", "x");
+      const result = await rlm.complete("What is this?", "x");
 
       expect(result.answer).toBeDefined();
     });
@@ -296,7 +296,7 @@ describeReal("E2E: Long Context Processing", () => {
       maxIterations: 10,
     });
 
-    const result = await rlm.completion(
+    const result = await rlm.complete(
       "What was the Q3 revenue?",
       financialReport
     );
@@ -314,7 +314,7 @@ describeReal("E2E: Long Context Processing", () => {
     });
 
     // First question
-    const result1 = await rlm.completion(
+    const result1 = await rlm.complete(
       "What was the year-over-year growth?",
       financialReport
     );
@@ -322,7 +322,7 @@ describeReal("E2E: Long Context Processing", () => {
 
     // Second question (reusing RLM instance)
     rlm.resetStats();
-    const result2 = await rlm.completion(
+    const result2 = await rlm.complete(
       "How many employees at year end?",
       financialReport
     );

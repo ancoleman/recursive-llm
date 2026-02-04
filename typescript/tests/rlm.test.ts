@@ -43,7 +43,7 @@ describe("RLM: Basic Completion", () => {
       provider,
     });
 
-    const result = await rlm.completion("What is this?", "Test context");
+    const result = await rlm.complete("What is this?", "Test context");
 
     expect(result.answer).toBe("The answer");
     expect(result.stats.llmCalls).toBe(2);
@@ -58,7 +58,7 @@ describe("RLM: Basic Completion", () => {
       provider,
     });
 
-    const result = await rlm.completion("Quick question", "Short context");
+    const result = await rlm.complete("Quick question", "Short context");
 
     expect(result.answer).toBe("Immediate answer");
     expect(result.stats.iterations).toBe(1);
@@ -77,7 +77,7 @@ describe("RLM: Basic Completion", () => {
       provider,
     });
 
-    const result = await rlm.completion("How long?", "Test");
+    const result = await rlm.complete("How long?", "Test");
 
     // FINAL_VAR parsing happens, but variable might not be extracted from sandbox
     // This tests the flow completes without error
@@ -94,7 +94,7 @@ describe("RLM: Basic Completion", () => {
       provider,
     });
 
-    const result = await rlm.completion("What?", "Context");
+    const result = await rlm.complete("What?", "Context");
 
     expect(result.answer).toBe("Confident answer");
     expect(result.confidence).toBe(0.95);
@@ -114,7 +114,7 @@ describe("RLM: Error Recovery", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     expect(result.answer).toBe("Recovered");
     expect(result.stats.replErrors).toBe(1);
@@ -133,7 +133,7 @@ describe("RLM: Limits", () => {
       provider,
     });
 
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       MaxIterationsError
     );
   });
@@ -148,7 +148,7 @@ describe("RLM: Limits", () => {
       2 // Start at depth 2 (at limit)
     );
 
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       MaxDepthError
     );
   });
@@ -164,7 +164,7 @@ describe("RLM: Model Selection", () => {
       provider,
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     // The provider was called with the model in options
     // We can't directly check the model here without modifying the mock
@@ -190,7 +190,7 @@ describe("RLM: Events", () => {
       iterations.push(iteration);
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     expect(iterations).toEqual([1, 2]);
   });
@@ -208,7 +208,7 @@ describe("RLM: Events", () => {
       codes.push(code);
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     expect(codes.length).toBe(1);
     expect(codes[0]).toContain("FINAL");
@@ -227,7 +227,7 @@ describe("RLM: Events", () => {
       completeAnswer = event.answer;
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     expect(completeAnswer).toBe("the answer");
   });
@@ -248,7 +248,7 @@ describe("RLM: Events", () => {
       errors.push(error);
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     expect(errors.length).toBe(1);
   });
@@ -267,7 +267,7 @@ describe("RLM: Statistics", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     expect(result.stats.llmCalls).toBe(3);
   });
@@ -280,7 +280,7 @@ describe("RLM: Statistics", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Execution time might be 0 for very fast mock operations
     expect(result.stats.executionTimeMs).toBeGreaterThanOrEqual(0);
@@ -294,7 +294,7 @@ describe("RLM: Statistics", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     expect(result.stats.estimatedCost).toBeGreaterThan(0);
   });
@@ -307,13 +307,13 @@ describe("RLM: Statistics", () => {
       provider,
     });
 
-    await rlm.completion("Test 1", "Context");
+    await rlm.complete("Test 1", "Context");
     expect(rlm.stats.llmCalls).toBe(1);
 
     rlm.resetStats();
     expect(rlm.stats.llmCalls).toBe(0);
 
-    await rlm.completion("Test 2", "Context");
+    await rlm.complete("Test 2", "Context");
     expect(rlm.stats.llmCalls).toBe(1);
   });
 });
@@ -330,7 +330,7 @@ describe("RLM: Context Handling", () => {
     });
 
     const context = "This is my test context with some content.";
-    const result = await rlm.completion("What?", context);
+    const result = await rlm.complete("What?", context);
 
     // The context should be accessible in the sandbox
     expect(result.answer).toBe("done");
@@ -345,7 +345,7 @@ describe("RLM: Context Handling", () => {
     });
 
     const largeContext = "A".repeat(100000);
-    const result = await rlm.completion("Analyze", largeContext);
+    const result = await rlm.complete("Analyze", largeContext);
 
     expect(result.answer).toBe("processed");
   });

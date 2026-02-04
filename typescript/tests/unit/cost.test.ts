@@ -36,7 +36,7 @@ describe("Cost Management: Token Tracking", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Total tokens = input + output
     expect(result.stats.totalTokens).toBe(225);
@@ -60,7 +60,7 @@ describe("Cost Management: Token Tracking", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // 3 calls * (100 + 50) = 450 tokens
     expect(result.stats.totalTokens).toBe(450);
@@ -93,7 +93,7 @@ describe("Cost Management: Token Tracking", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should have tracked tokens from multiple calls
     expect(result.stats.totalTokens).toBeGreaterThan(300);
@@ -112,7 +112,7 @@ describe("Cost Management: Cost Calculation", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Expected: (1000 * 3 + 500 * 15) / 1_000_000 = 0.0105
     const expected = (1000 * 3 + 500 * 15) / 1_000_000;
@@ -130,7 +130,7 @@ describe("Cost Management: Cost Calculation", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Default pricing: $2.5/M input, $10/M output
     const expected = (1000 * 2.5 + 500 * 10) / 1_000_000;
@@ -164,7 +164,7 @@ describe("Cost Management: Budget Enforcement", () => {
       provider,
     });
 
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       CostBudgetExceededError
     );
   });
@@ -198,7 +198,7 @@ describe("Cost Management: Budget Enforcement", () => {
     });
 
     try {
-      await rlm.completion("Test", "Context");
+      await rlm.complete("Test", "Context");
     } catch (e) {
       // May throw budget exceeded, that's fine
     }
@@ -240,7 +240,7 @@ describe("Cost Management: Budget Enforcement", () => {
       warnings.push(event);
     });
 
-    await rlm.completion("Test", "Context");
+    await rlm.complete("Test", "Context");
 
     // Should have received at least one warning
     if (warnings.length > 0) {
@@ -271,7 +271,7 @@ describe("Cost Management: Budget Enforcement", () => {
       provider,
     });
 
-    await expect(rlm.completion("Test", "Context")).rejects.toThrow(
+    await expect(rlm.complete("Test", "Context")).rejects.toThrow(
       CostBudgetExceededError
     );
 
@@ -306,7 +306,7 @@ FINAL(result)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Total cost should include both root and sub-RLM
     expect(result.stats.estimatedCost).toBeGreaterThan(0);
@@ -349,7 +349,7 @@ FINAL(r)
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should complete without throwing
     expect(result.answer).toBe("sub-done");
@@ -387,7 +387,7 @@ console.log("Results:", results);
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     // Should have made multiple LLM calls
     expect(result.stats.llmCalls).toBeGreaterThanOrEqual(2);
@@ -463,7 +463,7 @@ describe("Cost Management: Statistics", () => {
       provider,
     });
 
-    const result = await rlm.completion("Test", "Context");
+    const result = await rlm.complete("Test", "Context");
 
     expect(result.stats.estimatedCost).toBeGreaterThan(0);
     expect(typeof result.stats.estimatedCost).toBe("number");
@@ -477,14 +477,14 @@ describe("Cost Management: Statistics", () => {
       provider,
     });
 
-    await rlm.completion("Test 1", "Context");
+    await rlm.complete("Test 1", "Context");
     const cost1 = rlm.stats.estimatedCost;
     expect(cost1).toBeGreaterThan(0);
 
     rlm.resetStats();
     expect(rlm.stats.estimatedCost).toBe(0);
 
-    await rlm.completion("Test 2", "Context");
+    await rlm.complete("Test 2", "Context");
     const cost2 = rlm.stats.estimatedCost;
 
     // Second completion should have fresh cost

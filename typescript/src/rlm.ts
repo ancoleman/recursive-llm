@@ -75,7 +75,7 @@ export class MockLLMProvider implements LLMProvider {
  *   provider: myLLMProvider,
  * });
  *
- * const result = await rlm.completion(
+ * const result = await rlm.complete(
  *   "What is the main topic?",
  *   longDocumentText
  * );
@@ -141,13 +141,13 @@ export class RLM extends EventEmitter<RLMEvents> {
   }
 
   /**
-   * Execute a completion query against a context.
+   * Execute a complete query against a context.
    *
    * @param query - The question to answer
    * @param context - The context document (string or ContextProvider)
    * @returns Completion result with answer and stats
    */
-  async completion(
+  async complete(
     query: string,
     context: string | ContextProvider
   ): Promise<CompletionResult> {
@@ -379,7 +379,7 @@ export class RLM extends EventEmitter<RLMEvents> {
       );
 
       try {
-        const result = await subRLM.completion(subQuery, subContext);
+        const result = await subRLM.complete(subQuery, subContext);
 
         // Accumulate stats from sub-RLM
         this._llmCalls += subRLM.stats.llmCalls;
