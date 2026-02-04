@@ -38,7 +38,7 @@
     "@sebastianwessel/quickjs": "^3.0.0"
   },
   "devDependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.2.14",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.31",
     "@anthropic-ai/claude-code": "^2.1.14",
     "@biomejs/biome": "^1.9.0",
     "@types/bun": "latest",

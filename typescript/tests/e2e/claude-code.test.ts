@@ -100,20 +100,68 @@ describeReal("E2E: Claude Code Provider", () => {
   });
 
   describe("Context Processing", () => {
-    it("should extract information from context", async () => {
+    it("should refuse to hallucinate on insufficient context", async () => {
       if (!available) return;
 
+      // Deliberately small/irrelevant context - no revenue info
+      const context = "The weather is nice today. The sky is blue.";
+
+      const rlm = new RLM({
+        model: "haiku",
+        provider,
+        maxIterations: 3,
+      });
+
+      const result = await rlm.complete(
+        "What is the company's revenue?",
+        context
+      );
+
+      // Should indicate it can't find the answer, NOT make one up
+      const answer = result.answer.toLowerCase();
+      expect(
+        answer.includes("cannot") ||
+        answer.includes("not") ||
+        answer.includes("no") ||
+        answer.includes("unable") ||
+        answer.includes("doesn't contain")
+      ).toBe(true);
+      // Should NOT contain made-up numbers
+      expect(answer).not.toMatch(/\$\d+\s*(million|billion|thousand)/i);
+    });
+
+    it("should extract information from sufficient context", async () => {
+      if (!available) return;
+
+      // Larger context with clear data - more realistic
       const context = `
-# Company Report
+# TechCorp Annual Report 2024
 
-## Financial Summary
-- Revenue: $10 million
-- Profit: $2 million
-- Employees: 50
+## Executive Summary
+TechCorp had an exceptional year with strong growth across all segments.
+Our innovative products continue to drive market adoption.
 
-## Key Metrics
-- Growth rate: 25%
-- Customer satisfaction: 4.5/5
+## Financial Highlights
+
+### Revenue Performance
+Total annual revenue reached $10 million, representing a 25% increase
+from the previous fiscal year. This growth was driven by our enterprise
+software division and expanding cloud services portfolio.
+
+### Profitability
+Net profit for the year was $2 million, with operating margins improving
+to 20% from 15% in the prior year.
+
+### Workforce
+We grew our team to 50 employees across three offices, with plans to
+expand to 75 employees by end of next year.
+
+## Market Position
+Customer satisfaction scores averaged 4.5 out of 5 stars, reflecting
+our commitment to quality and customer success.
+
+## Looking Forward
+We expect continued growth in 2025 with projected revenue of $15 million.
       `;
 
       const rlm = new RLM({
@@ -127,6 +175,7 @@ describeReal("E2E: Claude Code Provider", () => {
         context
       );
 
+      // Should find the actual revenue from context
       expect(result.answer.toLowerCase()).toMatch(/\$?10|ten/i);
       expect(result.answer.toLowerCase()).toMatch(/million/i);
     });

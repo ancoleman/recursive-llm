@@ -75,8 +75,9 @@ export {
   VercelAIProvider,
   FetchProvider,
   ClaudeCodeProvider,
+  ClaudeAgentProvider,
 } from "./providers";
-export type { ProviderConfig, LLMResponse, ClaudeCodeProviderConfig } from "./providers";
+export type { ProviderConfig, LLMResponse, ClaudeCodeProviderConfig, ClaudeAgentProviderConfig } from "./providers";
 
 // Parser utilities (for advanced usage)
 export {

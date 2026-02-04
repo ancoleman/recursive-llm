@@ -151,6 +151,8 @@ export class ClaudeCodeProvider implements LLMProvider {
       model,
       "--output-format",
       "json",
+      "--tools", "", // Disable built-in tools - RLM uses its own sandbox
+      "--setting-sources", "", // Don't load project settings (CLAUDE.md)
     ];
 
     if (this.config.maxBudgetUsd) {
